@@ -1,0 +1,16 @@
+.App {
+  text-align: center;
+  max-width: 80%;
+}
+
+.todo-list-container {
+  margin-top: 20px;
+}
+
+.garbage-can {
+  margin-left: 20px;
+}
+
+.garbage-color {
+  color: red;
+}
