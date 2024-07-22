@@ -61,10 +61,16 @@ function App() {
     }
   }
 
-  // Update todo in text field
-  const handleUpdateField = (id, e) => {
-    const updatedTodo = { _id: id, text: e.target.value, type: "" }
-    setTodos(todos.map((t, index) => t._id === id ? updatedTodo : t))
+  // Update todo text field
+  const handleUpdateText = (tInput, value) => {
+    const updatedTodo = { _id: tInput._id, text: value, type: tInput.type }
+    setTodos(todos.map((t, index) => t._id === tInput._id ? updatedTodo : t ))
+  }
+
+  // Update todo select field
+  const handleUpdateSelect = (tSelect, value) => {
+    const updatedTodo = { _id: tSelect._id, text: tSelect.text, type: value }
+    setTodos(todos.map((t, index) => t._id === tSelect._id ? updatedTodo : t ))
   }
 
   // Update todo in database
@@ -75,10 +81,10 @@ function App() {
         console.log(response.data)
         // Udpate "update button" text with happy little checkbox
         setUpdateButton({ updated: true, id: t._id })
+        // Remove checkbox after 3 seconds
         setTimeout(() => {
           setUpdateButton({ updated: false, id: "" })
         }, 3000)
-        // clearTimeout(timer)
       })
       .catch(function (error) {
         console.log(error.message)
@@ -127,11 +133,22 @@ function App() {
             <input
               type="text"
               value={t.text}
-              onChange={(e) => handleUpdateField(t._id, e)}
+              onChange={e => handleUpdateText(t, e.target.value)}
               className="form-control"
               placeholder="Todo"
               aria-label="Todo"
             />
+            <select
+              value={t.type}
+              onChange={e => handleUpdateSelect(t, e.target.value)}
+              defaultValue={t.type}
+            >
+              <option value=""></option>
+              <option value="Urgent">Urgent</option>
+              <option value="Medium">Medium</option>
+              <option value="Low">Low</option>
+              <option value="Uncategorized">Uncategorized</option>
+            </select>
             <button
               onClick={(e) => handleUpdateTodo(t)}
               className={`btn ${updateButton.updated && updateButton.id === t._id ? "btn-success" : "btn-primary"}`}
